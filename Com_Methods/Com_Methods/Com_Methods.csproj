@@ -44,9 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Matrix\Block_Matrix.cs" />
+    <Compile Include="Matrix\Sparse_Matrix.cs" />
     <Compile Include="Orthogonal_Transformation\Givens_Transformation.cs" />
     <Compile Include="Orthogonal_Transformation\Gram_Schmidt_Procedure.cs" />
     <Compile Include="Orthogonal_Transformation\Householder_Transformation.cs" />
+    <Compile Include="Preconditioners\Diagonal_Preconditioner.cs" />
+    <Compile Include="Preconditioners\LU_Preconditioner.cs" />
+    <Compile Include="Preconditioners\Preconditioner.cs" />
+    <Compile Include="Solvers\Direct_Solvers\Incomplete_LU_Decomposition.cs" />
     <Compile Include="Solvers\Direct_Solvers\Substitution_Method.cs" />
     <Compile Include="Solvers\Direct_Solvers\Gauss_Method.cs" />
     <Compile Include="Solvers\Direct_Solvers\LU_Decomposition.cs" />
@@ -54,6 +59,8 @@
     <Compile Include="Matrix\Matrix.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solvers\Iteration_Solvers\BiConjurate_Gradient_Method.cs" />
+    <Compile Include="Solvers\Iteration_Solvers\Conjurate_Gradient_Method.cs" />
     <Compile Include="Solvers\Iteration_Solvers\Iteration_Solver.cs" />
     <Compile Include="Solvers\Iteration_Solvers\Jacobi_Method.cs" />
     <Compile Include="Solvers\Iteration_Solvers\SOR_Method.cs" />

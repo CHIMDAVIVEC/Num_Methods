@@ -114,10 +114,10 @@ namespace Com_Methods
                     int SIZE_BLOCK = 450;
                     double m = 1e+4;
                     double z = 1.2;
-                    for (int k = 0; k < 3; k++)
+                    for (int k = 0; k < 1; k++)
                     {
                         //var Solver = new Jacobi_Method(30000, 1e-12);
-                        var Solver = new SOR_Method(30000, 1e-12);
+                        var Solver = new SOR_Method(30000, 1e-4);
 
 
                         //Вычисление точного решения
@@ -137,19 +137,33 @@ namespace Com_Methods
 
                         //Блочная или обычная матрица/вектор
 
-                        var A = new Block_Matrix("Data\\System3\\", SIZE_BLOCK, m);
-                        var F = new Block_Vector("Data\\System3\\", SIZE_BLOCK);
+                        //var A = new Block_Matrix("Data\\System3\\", SIZE_BLOCK, m);
+                        //var F = new Block_Vector("Data\\System3\\", SIZE_BLOCK);
                         //var A = new Matrix("Data\\System3\\", m);
                         //var F = new Vector("Data\\System3\\");
+                        var A = new Matrix(3, 3);
+                        var F = new Vector(3);
+                        F.Elem[0] = 8;
+                        F.Elem[1] = 8;
+                        F.Elem[2] = 11;
+                        var ElemMatrix = new double[][]
+                        {
+                                            //new double[]{-2,-2,-1},
+                                            //new double[]{1,0,-2},
+                                            //new double[]{0,1,2}
+                                            new double[]{10,1,0},
+                                            new double[]{1,10,0},
+                                            new double[]{0,0,10}
 
-
+                        };
+                        A.Elem = ElemMatrix;
                         var sw = new Stopwatch();
                         sw.Start();
 
 
                         //var X = Solver.Start_Solver(A, F);
-                        //var X = Solver.Start_Solver(A, F, 1);
-                        var X = Solver.Start_Solver(A, F, z);
+                        var X = Solver.Start_Solver(A, F, 1);
+                        //var X = Solver.Start_Solver(A, F, z);
 
 
                         sw.Stop();
@@ -182,17 +196,43 @@ namespace Com_Methods
 
                         //Console.WriteLine("delta = " + (X_true.Norma() / X_true_Norm));
                         //Console.WriteLine("Cond(A) = " + A.Cond_InfinityNorm() + "\n");
-                        Console.WriteLine("m = " + m);
+                        //Console.WriteLine("m = " + m);
                         //Console.WriteLine("z = " + z);
                         Console.WriteLine("--------------------------");
 
-                        m /= 100;
+                        //m /= 100;
                         //z += 0.1;
                     }
                 });
 
+                var T4 = new Thread(() =>
+                {
+                    var A = new CSlR_Matrix("Data\\Sparse_Format\\Systems2\\nonSPD\\");
+                    var X_true = new Vector(A.N);
+                    var F = new Vector(A.N);
+
+                    for (int i = 0; i < A.N; i++)
+                        X_true.Elem[i] = 1.0;
+                    A.Mult_MV(X_true, F);
+
+                    var Solver = new Conjurate_Gradient_Method(30000, 1e-12);
+                    //var Solver = new BiConjurate_Gradient_Method(30000, 1e-12);
+
+                    var sw = new Stopwatch();
+                    sw.Start();
+
+                    var X = Solver.Start_Solver(A, F, Preconditioner.Type_Preconditioner.LU_Decomposition);
+
+                    sw.Stop();
+                    Console.WriteLine($"\nTime: {sw.Elapsed}");
+
+                    Console.WriteLine("Relative_Error: {0}", Tools.Relative_Error(X, X_true));
+                    Console.ReadLine();
+                    for (int i = 0; i < X.N; i++)
+                        Console.WriteLine("X[{0}] = {1}", i + 1, X.Elem[i]);
+                });
                 //время решения
-                Console.WriteLine(Tools.Measurement_Time(T3));
+                Console.WriteLine(Tools.Measurement_Time(T4));
 
             }
             catch (Exception E)
