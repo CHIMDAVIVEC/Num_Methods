@@ -2,7 +2,7 @@
 
 namespace Com_Methods
 {
-    class SOR_Method : Iteration_Solver
+    class SOR_Method : IIteration_Solver
     {
         public int Max_Iter { set; get; }
         public double Eps { set; get; }

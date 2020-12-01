@@ -2,7 +2,7 @@
 
 namespace Com_Methods
 {
-    class Jacobi_Method : Iteration_Solver
+    class Jacobi_Method : IIteration_Solver
     {
         public int Max_Iter { set; get; }
         public double Eps { set; get; }
